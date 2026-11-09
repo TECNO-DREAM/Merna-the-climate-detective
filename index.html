@@ -125,14 +125,14 @@
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
 
-        <!-- VIDEO HERO SECTION (Clean Video Player Without Name/Labels) -->
+        <!-- VIDEO HERO SECTION (Protected Video Player) -->
         <section class="bg-white border-neo rounded-3xl p-4 md:p-6 shadow-neo-lg overflow-hidden">
             <div class="flex flex-col lg:flex-row gap-6 items-center">
                 
                 <!-- Video Player Box -->
                 <div class="w-full lg:w-2/3 space-y-3">
                     <div class="relative bg-black rounded-2xl border-neo overflow-hidden aspect-video flex items-center justify-center">
-                        <video id="main-video-player" controls class="w-full h-full object-cover">
+                        <video id="main-video-player" controls controlsList="nodownload" oncontextmenu="return false;" class="w-full h-full object-cover">
                             <source src="TIPS.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
