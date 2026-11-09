@@ -6,12 +6,8 @@
     <title>ميرنا محققة البيئة - المنصة الرسمية للتحديات البيئية</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts Arabic (Cairo & Readex Pro) -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Canvas Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <script>
         tailwind.config = {
@@ -51,16 +47,29 @@
         .border-neo-2 {
             border: 3px solid #000000;
         }
+        .confetti-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: fall 2.5s ease-out forwards;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
     </style>
 </head>
 <body class="text-black antialiased selection:bg-cnYellow selection:text-black">
+
+    <!-- Canvas overlay for native confetti -->
+    <div id="confetti-container"></div>
 
     <!-- Navbar -->
     <header class="sticky top-0 z-50 bg-cnYellow border-b-4 border-black px-4 py-3 shadow-neo">
         <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="bg-cnCyan border-neo p-2 rounded-xl transform -rotate-3 hover:rotate-0 transition">
-                    <i class="fa-solid fa-leaf text-2xl text-black"></i>
+                <div class="bg-cnCyan border-neo p-2 rounded-xl transform -rotate-3 hover:rotate-0 transition flex items-center justify-center">
+                    <svg class="w-6 h-6 text-black" fill="currentColor" viewBox="0 0 24 24"><path d="M17 8C8 10 59 16.17 3.82 21.34L5.71 22l.74-.75C9.27 18.42 13 16 17 14V8z"/></svg>
                 </div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-black tracking-wide text-black drop-shadow-sm">
@@ -73,7 +82,7 @@
             <!-- Stats Bar -->
             <div class="flex items-center gap-2 md:gap-4 bg-white border-neo rounded-2xl px-4 py-2 shadow-neo-sm">
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-star text-cnYellow text-xl"></i>
+                    <span class="text-xl">⭐</span>
                     <div>
                         <span class="text-xs font-bold block text-gray-500">النقاط</span>
                         <span id="user-points" class="font-black text-lg">0</span>
@@ -81,7 +90,7 @@
                 </div>
                 <div class="h-8 w-1 bg-black rounded-full mx-1"></div>
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-trophy text-cnPurple text-xl"></i>
+                    <span class="text-xl">🏆</span>
                     <div>
                         <span class="text-xs font-bold block text-gray-500">المستوى</span>
                         <span id="user-level" class="font-black text-lg">1</span>
@@ -116,7 +125,7 @@
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
 
-        <!-- VIDEO HERO SECTION (نصائح ميرنا الخضراء) -->
+        <!-- VIDEO HERO SECTION (TIPS.mp4) -->
         <section class="bg-white border-neo rounded-3xl p-4 md:p-6 shadow-neo-lg overflow-hidden">
             <div class="flex flex-col lg:flex-row gap-6 items-center">
                 
@@ -124,21 +133,17 @@
                 <div class="w-full lg:w-2/3 space-y-3">
                     <div class="flex justify-between items-center bg-cnCyan border-neo rounded-t-2xl px-4 py-2">
                         <span class="font-black text-base md:text-lg flex items-center gap-2">
-                            <i class="fa-solid fa-circle-play text-red-600 animate-pulse"></i>
-                            نصائح ميرنا الخضراء
+                            <span class="text-red-600 animate-pulse">🔴</span>
+                            TIPS.mp4
                         </span>
                         <span class="bg-black text-white text-xs px-3 py-1 rounded-full font-bold">HD 1080p</span>
                     </div>
 
                     <div class="relative bg-black rounded-b-2xl border-neo overflow-hidden aspect-video flex items-center justify-center group">
-                        <!-- Embedded Player or Placeholder -->
-                        <div class="text-center p-6 text-white space-y-4">
-                            <div class="w-20 h-20 bg-cnYellow text-black border-neo rounded-full flex items-center justify-center mx-auto text-3xl shadow-neo transform group-hover:scale-110 transition">
-                                <i class="fa-solid fa-video"></i>
-                            </div>
-                            <h3 class="text-xl md:text-2xl font-black">شاهد فيديو كيفية حماية البيئة</h3>
-                            <p class="text-sm text-gray-300 max-w-md mx-auto">استمتع بمشاهدة الحلقات التوجيهية والإرشادات البيئية الخاصة بالمحققة ميرنا.</p>
-                        </div>
+                        <video id="main-video-player" controls class="w-full h-full object-cover">
+                            <source src="TIPS.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
 
@@ -147,21 +152,21 @@
                     <div class="inline-block bg-black text-white font-black text-xs px-3 py-1 rounded-md transform -rotate-2">
                         فيديو اليوم التعليمي
                     </div>
-                    <h2 class="text-2xl font-black leading-tight">نصائح ميرنا الخضراء: كيف تحمي كوكبك بخطوات بسيطة؟</h2>
+                    <h2 class="text-2xl font-black leading-tight">TIPS.mp4: دليل ميرنا لحماية البيئة</h2>
                     <p class="text-sm font-semibold text-gray-800 leading-relaxed">
                         تعلم مع المحققة ميرنا الطرق العملية لتقليل البصمة الكربونية، الحفاظ على المياه، وفرز النفايات المنزلية بطريقة ممتعة وذكية!
                     </p>
                     <div class="space-y-2 pt-2">
                         <div class="flex items-center gap-2 text-xs font-bold">
-                            <i class="fa-solid fa-check text-green-700"></i>
+                            <span class="text-green-700 font-bold">✓</span>
                             <span>حزمة تعليمات حماية التربة والهواء</span>
                         </div>
                         <div class="flex items-center gap-2 text-xs font-bold">
-                            <i class="fa-solid fa-check text-green-700"></i>
+                            <span class="text-green-700 font-bold">✓</span>
                             <span>نصائح توفير الطاقة المنزلية بنسبة 30%</span>
                         </div>
                         <div class="flex items-center gap-2 text-xs font-bold">
-                            <i class="fa-solid fa-check text-green-700"></i>
+                            <span class="text-green-700 font-bold">✓</span>
                             <span>أفكار تدوير البلاستيك والورق</span>
                         </div>
                     </div>
@@ -175,8 +180,7 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-4 border-neo rounded-2xl shadow-neo">
                 <div>
                     <h2 class="text-2xl md:text-3xl font-black flex items-center gap-3">
-                        <i class="fa-solid fa-list-check text-cnPurple"></i>
-                        مهام ميرنا البيئية (4,000+ مهمة)
+                        📋 مهام ميرنا البيئية (4,000+ مهمة)
                     </h2>
                     <p class="text-xs md:text-sm font-bold text-gray-600">اختر من قائمة المهام اليومية المتجددة وساهم في إنقاذ البيئة!</p>
                 </div>
@@ -193,8 +197,7 @@
 
             <!-- Search Bar -->
             <div class="relative">
-                <input type="text" id="task-search" oninput="searchTasks()" placeholder="ابحث في أكثر من 4000 مهمة بيئية..." class="w-full bg-white border-neo rounded-xl px-4 py-3 pl-10 font-bold text-sm shadow-neo-sm focus:outline-none focus:ring-2 focus:ring-cnCyan">
-                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-gray-400"></i>
+                <input type="text" id="task-search" oninput="searchTasks()" placeholder="ابحث في أكثر من 4000 مهمة بيئية..." class="w-full bg-white border-neo rounded-xl px-4 py-3 font-bold text-sm shadow-neo-sm focus:outline-none focus:ring-2 focus:ring-cnCyan">
             </div>
 
             <!-- Task Cards Container -->
@@ -205,7 +208,7 @@
             <!-- Load More Pagination Button -->
             <div class="text-center pt-4">
                 <button id="load-more-btn" onclick="loadMoreTasks()" class="bg-cnCyan hover:bg-cyan-300 text-black font-black px-8 py-3 rounded-2xl border-neo shadow-neo hover:translate-x-1 hover:translate-y-1 transition text-base">
-                    تحميل المزيد من المهام <i class="fa-solid fa-arrows-rotate mr-2"></i>
+                    تحميل المزيد من المهام 🔄
                 </button>
             </div>
         </section>
@@ -215,8 +218,7 @@
             <div class="flex justify-between items-center border-b-4 border-black pb-4">
                 <div>
                     <h2 class="text-2xl md:text-3xl font-black flex items-center gap-3">
-                        <i class="fa-solid fa-gamepad text-cnPink"></i>
-                        لعبة فرز النفايات الذكية
+                        🎮 لعبة فرز النفايات الذكية
                     </h2>
                     <p class="text-xs md:text-sm font-bold text-gray-600">اسحب أو انقر على النفايات لفرزها في الحاوية المناسبة!</p>
                 </div>
@@ -236,7 +238,6 @@
 
             <!-- Waste Bins -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Plastic Bin -->
                 <div ondragover="allowDrop(event)" ondrop="dropItem(event, 'plastic')" onclick="clickBin('plastic')" class="bin-box bg-yellow-100 border-neo rounded-2xl p-4 text-center cursor-pointer hover:bg-yellow-200 transition shadow-neo-sm">
                     <div class="w-14 h-14 bg-cnYellow text-black border-neo rounded-full flex items-center justify-center mx-auto text-2xl font-black mb-2 shadow-neo-sm">
                         ♻️
@@ -245,7 +246,6 @@
                     <p class="text-xs font-bold text-gray-600">زجاجات، أكياس، عبوات</p>
                 </div>
 
-                <!-- Organic Bin -->
                 <div ondragover="allowDrop(event)" ondrop="dropItem(event, 'organic')" onclick="clickBin('organic')" class="bin-box bg-green-100 border-neo rounded-2xl p-4 text-center cursor-pointer hover:bg-green-200 transition shadow-neo-sm">
                     <div class="w-14 h-14 bg-cnGreen text-black border-neo rounded-full flex items-center justify-center mx-auto text-2xl font-black mb-2 shadow-neo-sm">
                         🍎
@@ -254,7 +254,6 @@
                     <p class="text-xs font-bold text-gray-600">بقايا طعام، قشور، أوراق</p>
                 </div>
 
-                <!-- Paper Bin -->
                 <div ondragover="allowDrop(event)" ondrop="dropItem(event, 'paper')" onclick="clickBin('paper')" class="bin-box bg-blue-100 border-neo rounded-2xl p-4 text-center cursor-pointer hover:bg-blue-200 transition shadow-neo-sm">
                     <div class="w-14 h-14 bg-cnCyan text-black border-neo rounded-full flex items-center justify-center mx-auto text-2xl font-black mb-2 shadow-neo-sm">
                         📦
@@ -269,8 +268,7 @@
         <section class="bg-cnCyan border-neo rounded-3xl p-6 shadow-neo-lg space-y-6">
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl md:text-3xl font-black flex items-center gap-3">
-                    <i class="fa-solid fa-brain text-black"></i>
-                    اختبار المحقق البيئي السريع
+                    🧠 اختبار المحقق البيئي السريع
                 </h2>
                 <span class="bg-black text-white font-bold text-xs px-3 py-1 rounded-full">سؤال وجواب</span>
             </div>
@@ -288,14 +286,12 @@
         <section class="bg-white border-neo rounded-3xl p-6 shadow-neo-lg space-y-6">
             <div>
                 <h2 class="text-2xl md:text-3xl font-black flex items-center gap-3">
-                    <i class="fa-solid fa-palette text-cnPurple"></i>
-                    صانع شارات وميمز "ميرنا محققة البيئة"
+                    🎨 صانع شارات وميمز "ميرنا محققة البيئة"
                 </h2>
                 <p class="text-xs md:text-sm font-bold text-gray-600">صمم بطاقة محقق بيئي رسمية أو ميم بيئي توعوي واحفظه على جهازك!</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-                <!-- Controls -->
                 <div class="space-y-4 bg-gray-50 p-4 border-neo-2 rounded-2xl">
                     <div>
                         <label class="block font-black text-xs mb-1">اسم المحقق البيئي:</label>
@@ -318,12 +314,10 @@
                     </div>
 
                     <button onclick="downloadBadge()" class="w-full bg-cnGreen hover:bg-emerald-400 text-black font-black py-3 rounded-xl border-neo shadow-neo-sm flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-download"></i>
-                        تحميل الشارة الرسمية (PNG)
+                        📥 تحميل الشارة الرسمية (PNG)
                     </button>
                 </div>
 
-                <!-- Canvas Preview -->
                 <div class="flex justify-center">
                     <canvas id="badge-canvas" width="400" height="250" class="border-neo rounded-2xl shadow-neo max-w-full"></canvas>
                 </div>
@@ -347,7 +341,6 @@
 
     <!-- JAVASCRIPT ENGINE -->
     <script>
-        /* --- STATE MANAGEMENT --- */
         let points = 0;
         let level = 1;
         let gameScore = 0;
@@ -356,7 +349,6 @@
         let searchQuery = '';
         let visibleTaskCount = 12;
 
-        /* --- 4,000+ DYNAMIC TASKS GENERATOR ENGINE --- */
         const baseTaskTemplates = [
             { cat: 'nature', title: "سقي النباتات المنزلية", desc: "قم بسقي {N} نباتات في منزلكم باستخدام مياه مجمعة.", points: 20 },
             { cat: 'nature', title: "زرع شتلة بيئية", desc: "ازرع شتلة أو بذرة {PLANT} في حديقة أو أصيص للزهور.", points: 50 },
@@ -390,7 +382,6 @@
             });
         }
 
-        /* --- RENDER TASKS --- */
         function renderTasks() {
             const grid = document.getElementById('tasks-grid');
             grid.innerHTML = '';
@@ -463,7 +454,6 @@
             document.getElementById('user-level').textContent = level;
         }
 
-        /* --- WASTE SORTING GAME ENGINE --- */
         const wasteItems = [
             { id: 1, name: 'زجاجة بلاستيك', type: 'plastic', icon: '🍾' },
             { id: 2, name: 'قشرة تفاح', type: 'organic', icon: '🍎' },
@@ -534,7 +524,6 @@
             return { id: Date.now(), name: n, type: t, icon: icons[t] };
         }
 
-        /* --- QUIZ ENGINE --- */
         const quizData = [
             { q: "ما هي أفضل طريقة لتوفير المياه أثناء تنظيف الأسنان؟", options: ["ترك الصنبور مفتوحاً", "إغلاق الصنبور واستخدام كوب", "زيادة ضغط الماء"], correct: 1 },
             { q: "أي من المواد التالية يستغرق مئات السنين لكي يتحلل؟", options: ["قشر التفاح", "الورق", "البلاستيك"], correct: 2 },
@@ -579,7 +568,6 @@
             }, 2000);
         }
 
-        /* --- BADGE CANVAS GENERATOR --- */
         function updateBadgeCanvas() {
             const canvas = document.getElementById('badge-canvas');
             const ctx = canvas.getContext('2d');
@@ -638,12 +626,21 @@
             link.click();
         }
 
+        /* Pure JS Native Confetti */
         function triggerConfetti() {
-            confetti({
-                particleCount: 70,
-                spread: 60,
-                origin: { y: 0.7 }
-            });
+            const container = document.getElementById('confetti-container');
+            const colors = ['#00ECE5', '#FFE600', '#00FF66', '#7000FF', '#FF007A'];
+            for (let i = 0; i < 40; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'confetti-particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.width = (Math.random() * 8 + 6) + 'px';
+                particle.style.height = (Math.random() * 8 + 6) + 'px';
+                particle.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+                container.appendChild(particle);
+                setTimeout(() => particle.remove(), 3000);
+            }
         }
 
         window.onload = () => {
