@@ -125,21 +125,13 @@
     <!-- Main Content Container -->
     <main class="max-w-7xl mx-auto px-4 py-8 space-y-12">
 
-        <!-- VIDEO HERO SECTION (TIPS.mp4) -->
+        <!-- VIDEO HERO SECTION (Clean Video Player Without Name/Labels) -->
         <section class="bg-white border-neo rounded-3xl p-4 md:p-6 shadow-neo-lg overflow-hidden">
             <div class="flex flex-col lg:flex-row gap-6 items-center">
                 
                 <!-- Video Player Box -->
                 <div class="w-full lg:w-2/3 space-y-3">
-                    <div class="flex justify-between items-center bg-cnCyan border-neo rounded-t-2xl px-4 py-2">
-                        <span class="font-black text-base md:text-lg flex items-center gap-2">
-                            <span class="text-red-600 animate-pulse"></span>
-                            
-                        </span>
-                        <span class="bg-black text-white text-xs px-3 py-1 rounded-full font-bold"></span>
-                    </div>
-
-                    <div class="relative bg-black rounded-b-2xl border-neo overflow-hidden aspect-video flex items-center justify-center group">
+                    <div class="relative bg-black rounded-2xl border-neo overflow-hidden aspect-video flex items-center justify-center">
                         <video id="main-video-player" controls class="w-full h-full object-cover">
                             <source src="TIPS.mp4" type="video/mp4">
                             Your browser does not support the video tag.
@@ -152,7 +144,7 @@
                     <div class="inline-block bg-black text-white font-black text-xs px-3 py-1 rounded-md transform -rotate-2">
                         فيديو اليوم التعليمي
                     </div>
-                    <h2 class="text-2xl font-black leading-tight">TIPS.mp4: دليل ميرنا لحماية البيئة</h2>
+                    <h2 class="text-2xl font-black leading-tight">دليل ميرنا الشامل لحماية البيئة</h2>
                     <p class="text-sm font-semibold text-gray-800 leading-relaxed">
                         تعلم مع المحققة ميرنا الطرق العملية لتقليل البصمة الكربونية، الحفاظ على المياه، وفرز النفايات المنزلية بطريقة ممتعة وذكية!
                     </p>
@@ -626,7 +618,6 @@
             link.click();
         }
 
-        /* Pure JS Native Confetti */
         function triggerConfetti() {
             const container = document.getElementById('confetti-container');
             const colors = ['#00ECE5', '#FFE600', '#00FF66', '#7000FF', '#FF007A'];
